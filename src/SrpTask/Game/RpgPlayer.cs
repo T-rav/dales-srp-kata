@@ -56,17 +56,6 @@ namespace SrpTask.Game
         {
             item.ActionForPlayer(this);
 
-            if (!item.IsLightEnoughToPickup(this)) return false;
-
-            if (!item.UniqueItemAction(this)) return false;
-
-            // Don't pick up items that give health, just consume them.
-            if (item.HealthItemAction(this)) return true;
-
-            item.RareItemAction(this);
-
-            Inventory.Add(item);
-
             CalculateStats();
 
             return true;

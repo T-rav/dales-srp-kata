@@ -87,6 +87,15 @@
         public void ActionForPlayer(RpgPlayer rpgPlayer)
         {
             if (!IsLightEnoughToPickup(rpgPlayer)) return;
+
+            if (!UniqueItemAction(rpgPlayer)) return;
+
+            // Don't pick up items that give health, just consume them.
+            if (HealthItemAction(rpgPlayer)) return;
+
+            RareItemAction(rpgPlayer);
+
+            rpgPlayer.Inventory.Add(this);
         }
     }
 }
