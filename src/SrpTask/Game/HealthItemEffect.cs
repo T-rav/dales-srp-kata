@@ -2,7 +2,7 @@ using System;
 
 namespace SrpTask.Game
 {
-    public class HealthItemEffect
+    public class HealthItemEffect : ItemEffect
     {
         public void Effect(Item item, RpgPlayer rpgPlayer, IGameEngine gameEngine, Action<Item, RpgPlayer> inventoryCallback)
         {

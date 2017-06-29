@@ -2,7 +2,7 @@
 
 namespace SrpTask.Game
 {
-    public class RareItemEffect
+    public class RareItemEffect : ItemEffect
     {
         public void Effect(Item item, RpgPlayer rpgPlayer, IGameEngine gameEngine, Action<Item, RpgPlayer> inventoryCallback)
         {
