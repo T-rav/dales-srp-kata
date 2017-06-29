@@ -41,16 +41,16 @@ namespace SrpTask.Game
             return item.Heal > 0;
         }
 
-        public static void RareItemEffectAction(Item item, RpgPlayer rpgPlayer, IGameEngine gameEngine, Action<Item, RpgPlayer> callback)
+        public static void RareItemEffectAction(Item item, RpgPlayer rpgPlayer, IGameEngine gameEngine, Action<Item, RpgPlayer> inventoryCallback)
         {
             if (item.Rare)
             {
                 gameEngine.PlaySpecialEffect("cool_swirly_particles");
-                callback(item, rpgPlayer);
+                inventoryCallback(item, rpgPlayer);
             }
         }
 
-        public static void HealthItemEffectAction(Item item, RpgPlayer rpgPlayer, IGameEngine gameEngine, Action<Item, RpgPlayer> callback)
+        public static void HealthItemEffectAction(Item item, RpgPlayer rpgPlayer, IGameEngine gameEngine, Action<Item, RpgPlayer> inventoryCallback)
         {
             rpgPlayer.Health += item.Heal;
 
@@ -62,12 +62,12 @@ namespace SrpTask.Game
                 gameEngine.PlaySpecialEffect("green_swirly");
             }
 
-            callback(item, rpgPlayer);
+            inventoryCallback(item, rpgPlayer);
         }
 
-        public static void RegularItemEffectAction(Item item, RpgPlayer rpgPlayer, IGameEngine gameEngine, Action<Item, RpgPlayer> callback)
+        public static void RegularItemEffectAction(Item item, RpgPlayer rpgPlayer, IGameEngine gameEngine, Action<Item, RpgPlayer> inventoryCallback)
         {
-            callback(item, rpgPlayer);
+            inventoryCallback(item, rpgPlayer);
         }
 
         public void ActionForPlayer(RpgPlayer rpgPlayer)
