@@ -4,7 +4,7 @@ namespace SrpTask.Game
 {
     public class ItemEffectsFactory
     {
-        public static IEnumerable<ItemEffect> EffectsForItem(Item item)
+        public static IEnumerable<ItemEffect> EffectsFor(Item item)
         {
             return new List<ItemEffect>
             {

@@ -47,9 +47,7 @@ namespace SrpTask.Game
             if (ItemIsTooHeavyToPickupRule(this, rpgPlayer)) return;
             if (UniqueItemPickupRule(this, rpgPlayer)) return;
 
-            var effects = ItemEffectsFactory.EffectsForItem(this);
-
-            foreach (var effect in effects)
+            foreach (var effect in ItemEffectsFactory.EffectsFor(this))
             {
                 effect.Effect(this, rpgPlayer, rpgPlayer.GameEngine, AddItemToInventory);
             }
