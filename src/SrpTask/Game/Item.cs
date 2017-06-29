@@ -55,7 +55,7 @@
             return itemWeightIsOverPlayerCarryingCapacity;
         }
 
-        public bool UniqueItemAction(RpgPlayer rpgPlayer)
+        public bool UniqueItemPickupRule(RpgPlayer rpgPlayer)
         {
             var itemIsUniqueAndPlayerAlreadyHasIt = Unique && rpgPlayer.CheckIfItemExistsInInventory(this);
             return itemIsUniqueAndPlayerAlreadyHasIt;
@@ -86,7 +86,7 @@
         {
             if (ItemIsTooHeavyToPickupRule(rpgPlayer)) return;
 
-            if (UniqueItemAction(rpgPlayer)) return;
+            if (UniqueItemPickupRule(rpgPlayer)) return;
 
             // Don't pick up items that give health, just consume them.
             if (HealthItemAction(rpgPlayer, rpgPlayer.GameEngine)) return;
