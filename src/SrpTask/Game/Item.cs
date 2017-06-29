@@ -41,7 +41,7 @@ namespace SrpTask.Game
             return item.Heal > 0;
         }
 
-        public static void RareItemEffectAction(Item item, RpgPlayer rpgPlayer, IGameEngine gameEngine, Action<Item, RpgPlayer> inventoryCallback)
+        public static void RareItemEffect(Item item, RpgPlayer rpgPlayer, IGameEngine gameEngine, Action<Item, RpgPlayer> inventoryCallback)
         {
             if (item.Rare)
             {
@@ -50,7 +50,7 @@ namespace SrpTask.Game
             }
         }
 
-        public static void HealthItemEffectAction(Item item, RpgPlayer rpgPlayer, IGameEngine gameEngine, Action<Item, RpgPlayer> inventoryCallback)
+        public static void HealthItemEffect(Item item, RpgPlayer rpgPlayer, IGameEngine gameEngine, Action<Item, RpgPlayer> inventoryCallback)
         {
             rpgPlayer.Health += item.Heal;
 
@@ -65,7 +65,7 @@ namespace SrpTask.Game
             inventoryCallback(item, rpgPlayer);
         }
 
-        public static void RegularItemEffectAction(Item item, RpgPlayer rpgPlayer, IGameEngine gameEngine, Action<Item, RpgPlayer> inventoryCallback)
+        public static void RegularItemEffect(Item item, RpgPlayer rpgPlayer, IGameEngine gameEngine, Action<Item, RpgPlayer> inventoryCallback)
         {
             inventoryCallback(item, rpgPlayer);
         }
@@ -75,9 +75,9 @@ namespace SrpTask.Game
             if (ItemIsTooHeavyToPickupRule(this, rpgPlayer)) return;
             if (UniqueItemPickupRule(this, rpgPlayer)) return;
 
-            HealthItemEffectAction(this, rpgPlayer, rpgPlayer.GameEngine, AddItemToInventory);
-            RareItemEffectAction(this, rpgPlayer, rpgPlayer.GameEngine, AddItemToInventory);
-            RegularItemEffectAction(this, rpgPlayer, rpgPlayer.GameEngine, AddItemToInventory);
+            HealthItemEffect(this, rpgPlayer, rpgPlayer.GameEngine, AddItemToInventory);
+            RareItemEffect(this, rpgPlayer, rpgPlayer.GameEngine, AddItemToInventory);
+            RegularItemEffect(this, rpgPlayer, rpgPlayer.GameEngine, AddItemToInventory);
         }
 
         private void AddItemToInventory(Item item, RpgPlayer rpgPlayer)
