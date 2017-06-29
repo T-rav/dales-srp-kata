@@ -47,13 +47,10 @@ namespace SrpTask.Game
             }
         }
 
-        public bool PickUpItem(Item item)
+        public void PickUpItem(Item item)
         {
             item.ActionForPlayer(this);
-
             CalculateStats();
-
-            return true;
         }
 
         private void CalculateStats()
