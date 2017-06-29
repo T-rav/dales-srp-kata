@@ -52,6 +52,20 @@ namespace SrpTask.Game
                 return false;
 
             // Don't pick up items that give health, just consume them.
+            if (HealthItemAction(item)) return true;
+
+            if (item.Rare)
+                _gameEngine.PlaySpecialEffect("cool_swirly_particles");
+
+            Inventory.Add(item);
+
+            CalculateStats();
+
+            return true;
+        }
+
+        private bool HealthItemAction(Item item)
+        {
             if (item.Heal > 0)
             {
                 Health += item.Heal;
@@ -66,15 +80,7 @@ namespace SrpTask.Game
 
                 return true;
             }
-
-            if (item.Rare)
-                _gameEngine.PlaySpecialEffect("cool_swirly_particles");
-
-            Inventory.Add(item);
-
-            CalculateStats();
-
-            return true;
+            return false;
         }
 
         private void CalculateStats()
