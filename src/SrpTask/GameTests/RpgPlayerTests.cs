@@ -144,7 +144,7 @@ namespace SrpTask.GameTests
         [Test]
         public void PickUpItem_ThatIsTooHeavy_TheItemIsNotPickedUpByPlayer()
         {
-            var heavyItem = ItemBuilder.Build.WithWeight(Player.CarryingCapacity + 1).AnItem();
+            var heavyItem = ItemBuilder.Build.WithWeight(Player.CarryingCapacityInKilograms + 1).AnItem();
 
             Player.PickUpItem(heavyItem);
 

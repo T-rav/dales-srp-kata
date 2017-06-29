@@ -5,45 +5,30 @@ namespace SrpTask.Game
 {
     public class RpgPlayer
     {
-        public const int MaximumCarryingCapacity = 1000;
-
-        private readonly IGameEngine _gameEngine;
-
         public int Health { get; set; }
-
         public int MaxHealth { get; set; }
-
         public int Armour { get; private set; }
+        public int CarryingCapacityInKilograms { get; }
+        public const int MaximumCarryingCapacityInKilograms = 1000;
 
         public List<Item> Inventory;
-
-        /// <summary>
-        /// How much the player can carry in kilograms
-        /// </summary>
-        public int CarryingCapacity { get; private set; }
-
-        public IGameEngine GameEngine
-        {
-            get { return _gameEngine; }
-        }
+        public IGameEngine GameEngine { get; }
 
         public RpgPlayer(IGameEngine gameEngine)
         {
-            _gameEngine = gameEngine;
+            GameEngine = gameEngine;
             Inventory = new List<Item>();
-            CarryingCapacity = MaximumCarryingCapacity;
+            CarryingCapacityInKilograms = MaximumCarryingCapacityInKilograms;
         }
 
         public void UseItem(Item item)
         {
             if (item.Name == "Stink Bomb")
             {
-                var enemies = _gameEngine.GetEnemiesNear(this);
+                var enemies = GameEngine.GetEnemiesNear(this);
 
                 foreach (var enemy in enemies)
-                {
                     enemy.TakeDamage(100);
-                }
             }
         }
 
@@ -72,14 +57,14 @@ namespace SrpTask.Game
         {
             if (damage < Armour)
             {
-                _gameEngine.PlaySpecialEffect("parry");
+                GameEngine.PlaySpecialEffect("parry");
                 return;
             }
 
             var damageToDeal = damage - Armour;
             Health -= damageToDeal;
-            
-            _gameEngine.PlaySpecialEffect("lots_of_gore");
+
+            GameEngine.PlaySpecialEffect("lots_of_gore");
         }
     }
 }

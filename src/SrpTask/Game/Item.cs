@@ -25,7 +25,7 @@
         public static bool ItemIsTooHeavyToPickupRule(Item item, RpgPlayer player)
         {
             var weight = player.CalculateInventoryWeight();
-            var itemWeightIsOverPlayerCarryingCapacity = weight + item.Weight > player.CarryingCapacity;
+            var itemWeightIsOverPlayerCarryingCapacity = weight + item.Weight > player.CarryingCapacityInKilograms;
             return itemWeightIsOverPlayerCarryingCapacity;
         }
 
