@@ -41,43 +41,14 @@ namespace SrpTask.Game
             return item.Heal > 0;
         }
 
-        public static void RareItemEffect(Item item, RpgPlayer rpgPlayer, IGameEngine gameEngine, Action<Item, RpgPlayer> inventoryCallback)
-        {
-            if (item.Rare)
-            {
-                gameEngine.PlaySpecialEffect("cool_swirly_particles");
-                inventoryCallback(item, rpgPlayer);
-            }
-        }
-
-        public static void HealthItemEffect(Item item, RpgPlayer rpgPlayer, IGameEngine gameEngine, Action<Item, RpgPlayer> inventoryCallback)
-        {
-            rpgPlayer.Health += item.Heal;
-
-            if (rpgPlayer.Health > rpgPlayer.MaxHealth)
-                rpgPlayer.Health = rpgPlayer.MaxHealth;
-
-            if (item.Heal > 500)
-            {
-                gameEngine.PlaySpecialEffect("green_swirly");
-            }
-
-            inventoryCallback(item, rpgPlayer);
-        }
-
-        public static void RegularItemEffect(Item item, RpgPlayer rpgPlayer, IGameEngine gameEngine, Action<Item, RpgPlayer> inventoryCallback)
-        {
-            inventoryCallback(item, rpgPlayer);
-        }
-
         public void ActionForPlayer(RpgPlayer rpgPlayer)
         {
             if (ItemIsTooHeavyToPickupRule(this, rpgPlayer)) return;
             if (UniqueItemPickupRule(this, rpgPlayer)) return;
 
-            HealthItemEffect(this, rpgPlayer, rpgPlayer.GameEngine, AddItemToInventory);
-            RareItemEffect(this, rpgPlayer, rpgPlayer.GameEngine, AddItemToInventory);
-            RegularItemEffect(this, rpgPlayer, rpgPlayer.GameEngine, AddItemToInventory);
+            HealthItemEffect.Effect(this, rpgPlayer, rpgPlayer.GameEngine, AddItemToInventory);
+            RareItemEffect.Effect(this, rpgPlayer, rpgPlayer.GameEngine, AddItemToInventory);
+            RegularItemEffect.Effect(this, rpgPlayer, rpgPlayer.GameEngine, AddItemToInventory);
         }
 
         private void AddItemToInventory(Item item, RpgPlayer rpgPlayer)
