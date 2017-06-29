@@ -48,16 +48,16 @@
             Id = id;
         }
 
-        public bool ItemIsTooHeavyToPickupRule(RpgPlayer rpgPlayer)
+        public bool ItemIsTooHeavyToPickupRule(Item item, RpgPlayer rpgPlayer)
         {
             var weight = rpgPlayer.CalculateInventoryWeight();
-            var itemWeightIsOverPlayerCarryingCapacity = weight + Weight > rpgPlayer.CarryingCapacity;
+            var itemWeightIsOverPlayerCarryingCapacity = weight + item.Weight > rpgPlayer.CarryingCapacity;
             return itemWeightIsOverPlayerCarryingCapacity;
         }
 
-        public bool UniqueItemPickupRule(RpgPlayer rpgPlayer)
+        public bool UniqueItemPickupRule(Item item, RpgPlayer rpgPlayer)
         {
-            var itemIsUniqueAndPlayerAlreadyHasIt = Unique && rpgPlayer.CheckIfItemExistsInInventory(this);
+            var itemIsUniqueAndPlayerAlreadyHasIt = item.Unique && rpgPlayer.CheckIfItemExistsInInventory(this);
             return itemIsUniqueAndPlayerAlreadyHasIt;
         }
 
@@ -84,9 +84,9 @@
 
         public void ActionForPlayer(RpgPlayer rpgPlayer)
         {
-            if (ItemIsTooHeavyToPickupRule(rpgPlayer)) return;
+            if (ItemIsTooHeavyToPickupRule(this, rpgPlayer)) return;
 
-            if (UniqueItemPickupRule(rpgPlayer)) return;
+            if (UniqueItemPickupRule(this, rpgPlayer)) return;
 
             // Don't pick up items that give health, just consume them.
             if (HealthItemAction(rpgPlayer, rpgPlayer.GameEngine)) return;
