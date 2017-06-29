@@ -35,11 +35,6 @@
             return itemIsUniqueAndPlayerAlreadyHasIt;
         }
 
-        public static bool HealthItemPickupRule(Item item, RpgPlayer player)
-        {
-            return item.Heal > 0;
-        }
-
         public void ActionForPlayer(RpgPlayer player)
         {
             if (ItemIsTooHeavyToPickupRule(this, player)) return;
