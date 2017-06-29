@@ -48,7 +48,7 @@
             Id = id;
         }
 
-        public bool ItemIsTooHeavyToPickup(RpgPlayer rpgPlayer)
+        public bool ItemIsTooHeavyToPickupRule(RpgPlayer rpgPlayer)
         {
             var weight = rpgPlayer.CalculateInventoryWeight();
             var itemWeightIsOverPlayerCarryingCapacity = weight + Weight > rpgPlayer.CarryingCapacity;
@@ -84,7 +84,7 @@
 
         public void ActionForPlayer(RpgPlayer rpgPlayer)
         {
-            if (ItemIsTooHeavyToPickup(rpgPlayer)) return;
+            if (ItemIsTooHeavyToPickupRule(rpgPlayer)) return;
 
             if (!UniqueItemAction(rpgPlayer)) return;
 
