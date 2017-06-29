@@ -57,18 +57,16 @@
 
         public bool UniqueItemAction(RpgPlayer rpgPlayer)
         {
-            if (Unique && rpgPlayer.CheckIfItemExistsInInventory(this))
-                return false;
-            return true;
+            var itemIsUniqueAndPlayerAlreadyHasIt = Unique && rpgPlayer.CheckIfItemExistsInInventory(this);
+            return !itemIsUniqueAndPlayerAlreadyHasIt;
         }
 
         public void RareItemAction(RpgPlayer rpgPlayer)
         {
-            if (Rare)
-                rpgPlayer.GameEngine.PlaySpecialEffect("cool_swirly_particles");
+            if (Rare) rpgPlayer.GameEngine.PlaySpecialEffect("cool_swirly_particles");
         }
 
-        public bool HealthItemAction(RpgPlayer rpgPlayer)
+        public bool HealthItemAction(RpgPlayer rpgPlayer, IGameEngine gameEngine)
         {
             if (Heal <= 0) return false;
             rpgPlayer.Health += Heal;
@@ -76,9 +74,9 @@
             if (rpgPlayer.Health > rpgPlayer.MaxHealth)
                 rpgPlayer.Health = rpgPlayer.MaxHealth;
 
-            if (this.Heal > 500)
+            if (Heal > 500)
             {
-                rpgPlayer.GameEngine1.PlaySpecialEffect("green_swirly");
+                gameEngine.PlaySpecialEffect("green_swirly");
             }
 
             return true;
@@ -91,7 +89,7 @@
             if (!UniqueItemAction(rpgPlayer)) return;
 
             // Don't pick up items that give health, just consume them.
-            if (HealthItemAction(rpgPlayer)) return;
+            if (HealthItemAction(rpgPlayer, rpgPlayer.GameEngine)) return;
 
             RareItemAction(rpgPlayer);
 

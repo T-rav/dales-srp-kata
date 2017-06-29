@@ -27,11 +27,6 @@ namespace SrpTask.Game
             get { return _gameEngine; }
         }
 
-        public IGameEngine GameEngine1
-        {
-            get { return _gameEngine; }
-        }
-
         public RpgPlayer(IGameEngine gameEngine)
         {
             _gameEngine = gameEngine;
