@@ -93,7 +93,7 @@ namespace SrpTask.GameTests
         }
 
         [Test]
-        public void PickUpItem_ThatIsUnique_ItShouldNotBePickedUpIfThePlayerAlreadyHasIt()
+        public void PickUpItem_ThatIsUnique_ItShouldNotBePickedUpIfThePlayerAlreadyHasItInTheirInventory()
         {
             // Arrange
             Player.PickUpItem(ItemBuilder.Build.WithId(100).AnItem());
@@ -105,10 +105,10 @@ namespace SrpTask.GameTests
                 .AnItem();
 
             // Act
-            var result = Player.PickUpItem(uniqueItem);
+            Player.PickUpItem(uniqueItem);
 
             // Assert
-            result.Should().BeFalse();
+            Player.Inventory.Should().NotContain(uniqueItem);
         }
 
         [Test]
