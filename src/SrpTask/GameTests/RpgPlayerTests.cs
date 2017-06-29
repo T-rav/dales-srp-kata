@@ -142,19 +142,6 @@ namespace SrpTask.GameTests
         }
 
         [Test]
-        public void PickUpItem_ThatIsTooHeavy_TheItemIsNotPickedUp()
-        {
-            // Arrange
-            var heavyItem = ItemBuilder.Build.WithWeight(Player.CarryingCapacity + 1).AnItem();
-
-            // Act
-            var result = Player.PickUpItem(heavyItem);
-
-            // Assert
-            result.Should().BeFalse();
-        }
-
-        [Test]
         public void PickUpItem_ThatIsTooHeavy_TheItemIsNotPickedUpByPlayer()
         {
             var heavyItem = ItemBuilder.Build.WithWeight(Player.CarryingCapacity + 1).AnItem();
