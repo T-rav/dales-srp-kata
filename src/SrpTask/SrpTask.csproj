@@ -72,7 +72,7 @@
     <Compile Include="ItemBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Game\Player.cs" />
-    <Compile Include="GameTests\RpgPlayerTests.cs" />
+    <Compile Include="GameTests\PlayerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
