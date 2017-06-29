@@ -1,4 +1,6 @@
-﻿namespace SrpTask.Game
+﻿using System;
+
+namespace SrpTask.Game
 {
     public class Item
     {
@@ -34,14 +36,22 @@
             return itemIsUniqueAndPlayerAlreadyHasIt;
         }
 
-        public static void RareItemEffectAction(Item item, RpgPlayer rpgPlayer, IGameEngine gameEngine)
+        public static bool HealthItemPickupRule(Item item, RpgPlayer rpgPlayer)
         {
-            if (item.Rare) gameEngine.PlaySpecialEffect("cool_swirly_particles");
+            return item.Heal > 0;
         }
 
-        public static bool HealthItemEffectAction(Item item, RpgPlayer rpgPlayer, IGameEngine gameEngine)
+        public static void RareItemEffectAction(Item item, RpgPlayer rpgPlayer, IGameEngine gameEngine, Action<Item, RpgPlayer> callback)
         {
-            if (item.Heal <= 0) return false;
+            if (item.Rare)
+            {
+                gameEngine.PlaySpecialEffect("cool_swirly_particles");
+                callback(item, rpgPlayer);
+            }
+        }
+
+        public static void HealthItemEffectAction(Item item, RpgPlayer rpgPlayer, IGameEngine gameEngine, Action<Item, RpgPlayer> callback)
+        {
             rpgPlayer.Health += item.Heal;
 
             if (rpgPlayer.Health > rpgPlayer.MaxHealth)
@@ -52,18 +62,28 @@
                 gameEngine.PlaySpecialEffect("green_swirly");
             }
 
-            return true;
+            callback(item, rpgPlayer);
+        }
+
+        public static void RegularItemEffectAction(Item item, RpgPlayer rpgPlayer, IGameEngine gameEngine, Action<Item, RpgPlayer> callback)
+        {
+            callback(item, rpgPlayer);
         }
 
         public void ActionForPlayer(RpgPlayer rpgPlayer)
         {
             if (ItemIsTooHeavyToPickupRule(this, rpgPlayer)) return;
-
             if (UniqueItemPickupRule(this, rpgPlayer)) return;
 
-            if (HealthItemEffectAction(this, rpgPlayer, rpgPlayer.GameEngine)) return;
+            HealthItemEffectAction(this, rpgPlayer, rpgPlayer.GameEngine, AddItemToInventory);
+            RareItemEffectAction(this, rpgPlayer, rpgPlayer.GameEngine, AddItemToInventory);
+            RegularItemEffectAction(this, rpgPlayer, rpgPlayer.GameEngine, AddItemToInventory);
+        }
 
-            RareItemEffectAction(this, rpgPlayer, rpgPlayer.GameEngine);
+        private void AddItemToInventory(Item item, RpgPlayer rpgPlayer)
+        {
+            if (rpgPlayer.Inventory.Contains(item)) return;
+            if (item.Heal > 0) return;
 
             rpgPlayer.Inventory.Add(this);
         }
