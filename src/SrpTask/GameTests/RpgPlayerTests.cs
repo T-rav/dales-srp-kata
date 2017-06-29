@@ -9,7 +9,7 @@ namespace SrpTask.GameTests
     [TestFixture]
     public class RpgPlayerTests
     {
-        public RpgPlayer Player { get; set; }
+        public Player Player { get; set; }
 
         public Mock<IGameEngine> Engine { get; set; }
 
@@ -17,7 +17,7 @@ namespace SrpTask.GameTests
         public void Setup()
         {
             Engine = new Mock<IGameEngine>();
-            Player = new RpgPlayer(Engine.Object);
+            Player = new Player(Engine.Object);
         }
 
         [Test]

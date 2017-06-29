@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace SrpTask.Game
+namespace SrpTask.Game.ItemEffects
 {
     public class ItemEffectsFactory
     {

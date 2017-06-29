@@ -61,17 +61,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Game\Enemy.cs" />
-    <Compile Include="Game\AddHealthItemEffect.cs" />
     <Compile Include="Game\IGameEngine.cs" />
     <Compile Include="Game\Item.cs" />
-    <Compile Include="Game\ItemEffect.cs" />
-    <Compile Include="Game\ItemEffectsFactory.cs" />
-    <Compile Include="Game\LargeHealthQuantitySpecialEffect.cs" />
-    <Compile Include="Game\RareItemEffect.cs" />
-    <Compile Include="Game\RegularItemEffect.cs" />
+    <Compile Include="Game\ItemEffects\ItemEffect.cs" />
+    <Compile Include="Game\ItemEffects\ItemEffectsFactory.cs" />
+    <Compile Include="Game\ItemEffects\AddHealthItemEffect.cs" />
+    <Compile Include="Game\ItemEffects\LargeHealthQuantitySpecialEffect.cs" />
+    <Compile Include="Game\ItemEffects\RareItemEffect.cs" />
+    <Compile Include="Game\ItemEffects\RegularItemEffect.cs" />
     <Compile Include="ItemBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Game\RpgPlayer.cs" />
+    <Compile Include="Game\Player.cs" />
     <Compile Include="GameTests\RpgPlayerTests.cs" />
   </ItemGroup>
   <ItemGroup>

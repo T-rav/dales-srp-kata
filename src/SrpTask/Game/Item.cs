@@ -1,4 +1,6 @@
-﻿namespace SrpTask.Game
+﻿using SrpTask.Game.ItemEffects;
+
+namespace SrpTask.Game
 {
     public class Item
     {
@@ -22,20 +24,20 @@
         public int Weight { get; set; }
         public bool Unique { get; set; }
 
-        public static bool ItemIsTooHeavyToPickupRule(Item item, RpgPlayer player)
+        public static bool ItemIsTooHeavyToPickupRule(Item item, Player player)
         {
             var weight = player.CalculateInventoryWeight();
             var itemWeightIsOverPlayerCarryingCapacity = weight + item.Weight > player.CarryingCapacityInKilograms;
             return itemWeightIsOverPlayerCarryingCapacity;
         }
 
-        public static bool UniqueItemPickupRule(Item item, RpgPlayer player)
+        public static bool UniqueItemPickupRule(Item item, Player player)
         {
             var itemIsUniqueAndPlayerAlreadyHasIt = item.Unique && player.CheckIfItemExistsInInventory(item);
             return itemIsUniqueAndPlayerAlreadyHasIt;
         }
 
-        public void ActionForPlayer(RpgPlayer player)
+        public void ActionForPlayer(Player player)
         {
             if (ItemIsTooHeavyToPickupRule(this, player)) return;
             if (UniqueItemPickupRule(this, player)) return;
@@ -44,7 +46,7 @@
                 effect.Effect(this, player, player.GameEngine, AddItemToInventory);
         }
 
-        private void AddItemToInventory(Item item, RpgPlayer player)
+        private void AddItemToInventory(Item item, Player player)
         {
             if (player.Inventory.Contains(item)) return;
             if (item.Heal > 0) return;
