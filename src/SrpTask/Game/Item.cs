@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace SrpTask.Game
 {
@@ -46,9 +47,17 @@ namespace SrpTask.Game
             if (ItemIsTooHeavyToPickupRule(this, rpgPlayer)) return;
             if (UniqueItemPickupRule(this, rpgPlayer)) return;
 
-            new HealthItemEffect().Effect(this, rpgPlayer, rpgPlayer.GameEngine, AddItemToInventory);
-            new RareItemEffect().Effect(this, rpgPlayer, rpgPlayer.GameEngine, AddItemToInventory);
-            new RegularItemEffect().Effect(this, rpgPlayer, rpgPlayer.GameEngine, AddItemToInventory);
+            var effects = new List<ItemEffect>
+            {
+                new HealthItemEffect(),
+                new RareItemEffect(),
+                new RegularItemEffect()
+            };
+
+            foreach (var effect in effects)
+            {
+                effect.Effect(this, rpgPlayer, rpgPlayer.GameEngine, AddItemToInventory);
+            }
         }
 
         private void AddItemToInventory(Item item, RpgPlayer rpgPlayer)
