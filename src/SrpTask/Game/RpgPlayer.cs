@@ -46,7 +46,7 @@ namespace SrpTask.Game
         {
             if (!item.ItemWeightCheckAction(this)) return false;
 
-            if (!UniqueItemAction(item)) return false;
+            if (!item.UniqueItemAction(this)) return false;
 
             // Don't pick up items that give health, just consume them.
             if (HealthItemAction(item)) return true;
@@ -57,13 +57,6 @@ namespace SrpTask.Game
 
             CalculateStats();
 
-            return true;
-        }
-
-        private bool UniqueItemAction(Item item)
-        {
-            if (item.Unique && CheckIfItemExistsInInventory(item))
-                return false;
             return true;
         }
 
@@ -97,7 +90,7 @@ namespace SrpTask.Game
             Armour = Inventory.Sum(x => x.Armour);
         }
 
-        private bool CheckIfItemExistsInInventory(Item item)
+        public bool CheckIfItemExistsInInventory(Item item)
         {
             return Inventory.Any(x => x.Id == item.Id);
         }

@@ -55,5 +55,12 @@
                 return false;
             return true;
         }
+
+        public bool UniqueItemAction(RpgPlayer rpgPlayer)
+        {
+            if (this.Unique && rpgPlayer.CheckIfItemExistsInInventory(this))
+                return false;
+            return true;
+        }
     }
 }
