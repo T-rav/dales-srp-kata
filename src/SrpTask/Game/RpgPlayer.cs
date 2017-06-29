@@ -48,8 +48,7 @@ namespace SrpTask.Game
             if (weight + item.Weight > CarryingCapacity)
                 return false;
 
-            if (item.Unique && CheckIfItemExistsInInventory(item))
-                return false;
+            if (!UniqueItemAction(item)) return false;
 
             // Don't pick up items that give health, just consume them.
             if (HealthItemAction(item)) return true;
@@ -60,6 +59,13 @@ namespace SrpTask.Game
 
             CalculateStats();
 
+            return true;
+        }
+
+        private bool UniqueItemAction(Item item)
+        {
+            if (item.Unique && CheckIfItemExistsInInventory(item))
+                return false;
             return true;
         }
 
