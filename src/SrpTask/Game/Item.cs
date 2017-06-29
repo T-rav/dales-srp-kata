@@ -34,20 +34,20 @@
             return itemIsUniqueAndPlayerAlreadyHasIt;
         }
 
-        public void RareItemEffectAction(Item item, RpgPlayer rpgPlayer, IGameEngine gameEngine)
+        public static void RareItemEffectAction(Item item, RpgPlayer rpgPlayer, IGameEngine gameEngine)
         {
-            if (Rare) gameEngine.PlaySpecialEffect("cool_swirly_particles");
+            if (item.Rare) gameEngine.PlaySpecialEffect("cool_swirly_particles");
         }
 
-        public bool HealthItemEffectAction(Item item, RpgPlayer rpgPlayer, IGameEngine gameEngine)
+        public static bool HealthItemEffectAction(Item item, RpgPlayer rpgPlayer, IGameEngine gameEngine)
         {
-            if (Heal <= 0) return false;
-            rpgPlayer.Health += Heal;
+            if (item.Heal <= 0) return false;
+            rpgPlayer.Health += item.Heal;
 
             if (rpgPlayer.Health > rpgPlayer.MaxHealth)
                 rpgPlayer.Health = rpgPlayer.MaxHealth;
 
-            if (Heal > 500)
+            if (item.Heal > 500)
             {
                 gameEngine.PlaySpecialEffect("green_swirly");
             }
