@@ -155,6 +155,16 @@ namespace SrpTask.GameTests
         }
 
         [Test]
+        public void PickUpItem_ThatIsTooHeavy_TheItemIsNotPickedUpByPlayer()
+        {
+            var heavyItem = ItemBuilder.Build.WithWeight(Player.CarryingCapacity + 1).AnItem();
+
+            Player.PickUpItem(heavyItem);
+
+            Player.Inventory.Should().NotContain(heavyItem);
+        }
+
+        [Test]
         public void TakeDamage_WithNoArmour_HealthIsReducedAndParticleEffectIsShown()
         {
             // Arrange
