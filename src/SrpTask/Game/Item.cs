@@ -22,39 +22,39 @@
         public int Weight { get; set; }
         public bool Unique { get; set; }
 
-        public static bool ItemIsTooHeavyToPickupRule(Item item, RpgPlayer rpgPlayer)
+        public static bool ItemIsTooHeavyToPickupRule(Item item, RpgPlayer player)
         {
-            var weight = rpgPlayer.CalculateInventoryWeight();
-            var itemWeightIsOverPlayerCarryingCapacity = weight + item.Weight > rpgPlayer.CarryingCapacity;
+            var weight = player.CalculateInventoryWeight();
+            var itemWeightIsOverPlayerCarryingCapacity = weight + item.Weight > player.CarryingCapacity;
             return itemWeightIsOverPlayerCarryingCapacity;
         }
 
-        public static bool UniqueItemPickupRule(Item item, RpgPlayer rpgPlayer)
+        public static bool UniqueItemPickupRule(Item item, RpgPlayer player)
         {
-            var itemIsUniqueAndPlayerAlreadyHasIt = item.Unique && rpgPlayer.CheckIfItemExistsInInventory(item);
+            var itemIsUniqueAndPlayerAlreadyHasIt = item.Unique && player.CheckIfItemExistsInInventory(item);
             return itemIsUniqueAndPlayerAlreadyHasIt;
         }
 
-        public static bool HealthItemPickupRule(Item item, RpgPlayer rpgPlayer)
+        public static bool HealthItemPickupRule(Item item, RpgPlayer player)
         {
             return item.Heal > 0;
         }
 
-        public void ActionForPlayer(RpgPlayer rpgPlayer)
+        public void ActionForPlayer(RpgPlayer player)
         {
-            if (ItemIsTooHeavyToPickupRule(this, rpgPlayer)) return;
-            if (UniqueItemPickupRule(this, rpgPlayer)) return;
+            if (ItemIsTooHeavyToPickupRule(this, player)) return;
+            if (UniqueItemPickupRule(this, player)) return;
 
             foreach (var effect in ItemEffectsFactory.EffectsFor(this))
-                effect.Effect(this, rpgPlayer, rpgPlayer.GameEngine, AddItemToInventory);
+                effect.Effect(this, player, player.GameEngine, AddItemToInventory);
         }
 
-        private void AddItemToInventory(Item item, RpgPlayer rpgPlayer)
+        private void AddItemToInventory(Item item, RpgPlayer player)
         {
-            if (rpgPlayer.Inventory.Contains(item)) return;
+            if (player.Inventory.Contains(item)) return;
             if (item.Heal > 0) return;
 
-            rpgPlayer.Inventory.Add(this);
+            player.Inventory.Add(this);
         }
     }
 }
