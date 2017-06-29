@@ -58,7 +58,7 @@
         public bool UniqueItemAction(RpgPlayer rpgPlayer)
         {
             var itemIsUniqueAndPlayerAlreadyHasIt = Unique && rpgPlayer.CheckIfItemExistsInInventory(this);
-            return !itemIsUniqueAndPlayerAlreadyHasIt;
+            return itemIsUniqueAndPlayerAlreadyHasIt;
         }
 
         public void RareItemAction(RpgPlayer rpgPlayer, IGameEngine gameEngine)
@@ -86,7 +86,7 @@
         {
             if (ItemIsTooHeavyToPickupRule(rpgPlayer)) return;
 
-            if (!UniqueItemAction(rpgPlayer)) return;
+            if (UniqueItemAction(rpgPlayer)) return;
 
             // Don't pick up items that give health, just consume them.
             if (HealthItemAction(rpgPlayer, rpgPlayer.GameEngine)) return;
