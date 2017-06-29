@@ -57,39 +57,36 @@
 
         public bool UniqueItemAction(RpgPlayer rpgPlayer)
         {
-            if (this.Unique && rpgPlayer.CheckIfItemExistsInInventory(this))
+            if (Unique && rpgPlayer.CheckIfItemExistsInInventory(this))
                 return false;
             return true;
         }
 
         public void RareItemAction(RpgPlayer rpgPlayer)
         {
-            if (this.Rare)
+            if (Rare)
                 rpgPlayer.GameEngine.PlaySpecialEffect("cool_swirly_particles");
         }
 
         public bool HealthItemAction(RpgPlayer rpgPlayer)
         {
-            if (this.Heal > 0)
+            if (Heal <= 0) return false;
+            rpgPlayer.Health += Heal;
+
+            if (rpgPlayer.Health > rpgPlayer.MaxHealth)
+                rpgPlayer.Health = rpgPlayer.MaxHealth;
+
+            if (this.Heal > 500)
             {
-                rpgPlayer.Health += this.Heal;
-
-                if (rpgPlayer.Health > rpgPlayer.MaxHealth)
-                    rpgPlayer.Health = rpgPlayer.MaxHealth;
-
-                if (this.Heal > 500)
-                {
-                    rpgPlayer.GameEngine1.PlaySpecialEffect("green_swirly");
-                }
-
-                return true;
+                rpgPlayer.GameEngine1.PlaySpecialEffect("green_swirly");
             }
-            return false;
+
+            return true;
         }
 
         public void ActionForPlayer(RpgPlayer rpgPlayer)
         {
-            throw new System.NotImplementedException();
+            if (!IsLightEnoughToPickup(rpgPlayer)) return;
         }
     }
 }
