@@ -57,7 +57,7 @@
 
         public bool UniqueItemPickupRule(Item item, RpgPlayer rpgPlayer)
         {
-            var itemIsUniqueAndPlayerAlreadyHasIt = item.Unique && rpgPlayer.CheckIfItemExistsInInventory(this);
+            var itemIsUniqueAndPlayerAlreadyHasIt = item.Unique && rpgPlayer.CheckIfItemExistsInInventory(item);
             return itemIsUniqueAndPlayerAlreadyHasIt;
         }
 
