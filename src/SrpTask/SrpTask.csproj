@@ -61,10 +61,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Game\Enemy.cs" />
-    <Compile Include="Game\HealthItemEffect.cs" />
+    <Compile Include="Game\AddHealthItemEffect.cs" />
     <Compile Include="Game\IGameEngine.cs" />
     <Compile Include="Game\Item.cs" />
     <Compile Include="Game\ItemEffectsFactory.cs" />
+    <Compile Include="Game\LargeHealthQuantitySpecialEffect.cs" />
     <Compile Include="Game\RareItemEffect.cs" />
     <Compile Include="Game\RegularItemEffect.cs" />
     <Compile Include="ItemBuilder.cs" />

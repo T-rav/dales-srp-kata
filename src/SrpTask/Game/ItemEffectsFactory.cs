@@ -8,7 +8,8 @@ namespace SrpTask.Game
         {
             return new List<ItemEffect>
             {
-                new HealthItemEffect(),
+                new AddHealthItemEffect(),
+                new LargeHealthQuantitySpecialEffect(),
                 new RareItemEffect(),
                 new RegularItemEffect()
             };
