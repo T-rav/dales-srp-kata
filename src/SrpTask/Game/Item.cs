@@ -62,5 +62,30 @@
                 return false;
             return true;
         }
+
+        public void RareItemAction(RpgPlayer rpgPlayer)
+        {
+            if (this.Rare)
+                rpgPlayer.GameEngine.PlaySpecialEffect("cool_swirly_particles");
+        }
+
+        public bool HealthItemAction(RpgPlayer rpgPlayer)
+        {
+            if (this.Heal > 0)
+            {
+                rpgPlayer.Health += this.Heal;
+
+                if (rpgPlayer.Health > rpgPlayer.MaxHealth)
+                    rpgPlayer.Health = rpgPlayer.MaxHealth;
+
+                if (this.Heal > 500)
+                {
+                    rpgPlayer.GameEngine1.PlaySpecialEffect("green_swirly");
+                }
+
+                return true;
+            }
+            return false;
+        }
     }
 }

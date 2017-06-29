@@ -22,6 +22,16 @@ namespace SrpTask.Game
         /// </summary>
         public int CarryingCapacity { get; private set; }
 
+        public IGameEngine GameEngine
+        {
+            get { return _gameEngine; }
+        }
+
+        public IGameEngine GameEngine1
+        {
+            get { return _gameEngine; }
+        }
+
         public RpgPlayer(IGameEngine gameEngine)
         {
             _gameEngine = gameEngine;
@@ -49,40 +59,15 @@ namespace SrpTask.Game
             if (!item.UniqueItemAction(this)) return false;
 
             // Don't pick up items that give health, just consume them.
-            if (HealthItemAction(item)) return true;
+            if (item.HealthItemAction(this)) return true;
 
-            RareItemAction(item);
+            item.RareItemAction(this);
 
             Inventory.Add(item);
 
             CalculateStats();
 
             return true;
-        }
-
-        private void RareItemAction(Item item)
-        {
-            if (item.Rare)
-                _gameEngine.PlaySpecialEffect("cool_swirly_particles");
-        }
-
-        private bool HealthItemAction(Item item)
-        {
-            if (item.Heal > 0)
-            {
-                Health += item.Heal;
-
-                if (Health > MaxHealth)
-                    Health = MaxHealth;
-
-                if (item.Heal > 500)
-                {
-                    _gameEngine.PlaySpecialEffect("green_swirly");
-                }
-
-                return true;
-            }
-            return false;
         }
 
         private void CalculateStats()
