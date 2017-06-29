@@ -64,6 +64,7 @@
     <Compile Include="Game\AddHealthItemEffect.cs" />
     <Compile Include="Game\IGameEngine.cs" />
     <Compile Include="Game\Item.cs" />
+    <Compile Include="Game\ItemEffect.cs" />
     <Compile Include="Game\ItemEffectsFactory.cs" />
     <Compile Include="Game\LargeHealthQuantitySpecialEffect.cs" />
     <Compile Include="Game\RareItemEffect.cs" />
