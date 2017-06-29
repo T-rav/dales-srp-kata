@@ -1,16 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace SrpTask.Game
+﻿namespace SrpTask.Game
 {
     public class Item
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public int Heal { get; set; }
-        public int Armour { get; set; }
-        public int Weight { get; set; }
-        public bool Unique { get; set; }
         public readonly bool Rare;
 
         public Item(int id, string name, int heal, int armour, int weight, bool unique, bool rare)
@@ -23,6 +14,13 @@ namespace SrpTask.Game
             Unique = unique;
             Id = id;
         }
+
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int Heal { get; set; }
+        public int Armour { get; set; }
+        public int Weight { get; set; }
+        public bool Unique { get; set; }
 
         public static bool ItemIsTooHeavyToPickupRule(Item item, RpgPlayer rpgPlayer)
         {
@@ -48,9 +46,7 @@ namespace SrpTask.Game
             if (UniqueItemPickupRule(this, rpgPlayer)) return;
 
             foreach (var effect in ItemEffectsFactory.EffectsFor(this))
-            {
                 effect.Effect(this, rpgPlayer, rpgPlayer.GameEngine, AddItemToInventory);
-            }
         }
 
         private void AddItemToInventory(Item item, RpgPlayer rpgPlayer)
