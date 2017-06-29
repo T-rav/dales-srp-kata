@@ -47,5 +47,13 @@
             Unique = unique;
             Id = id;
         }
+
+        public bool ItemWeightCheckAction(RpgPlayer rpgPlayer)
+        {
+            var weight = rpgPlayer.CalculateInventoryWeight();
+            if (weight + this.Weight > rpgPlayer.CarryingCapacity)
+                return false;
+            return true;
+        }
     }
 }
