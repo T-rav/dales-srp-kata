@@ -38,21 +38,6 @@ namespace SrpTask.Game
             CalculateStats();
         }
 
-        private void CalculateStats()
-        {
-            Armour = Inventory.Sum(x => x.Armour);
-        }
-
-        public bool CheckIfItemExistsInInventory(Item item)
-        {
-            return Inventory.Any(x => x.Id == item.Id);
-        }
-
-        public int CalculateInventoryWeight()
-        {
-            return Inventory.Sum(x => x.Weight);
-        }
-
         public void TakeDamage(int damage)
         {
             if (damage < Armour)
@@ -66,5 +51,14 @@ namespace SrpTask.Game
 
             GameEngine.PlaySpecialEffect("lots_of_gore");
         }
+
+        public bool CheckIfItemExistsInInventory(Item item)
+            => Inventory.Any(x => x.Id == item.Id);
+
+        public int CalculateInventoryWeight()
+            => Inventory.Sum(x => x.Weight);
+
+        private void CalculateStats()
+            => Armour = Inventory.Sum(x => x.Armour);
     }
 }
