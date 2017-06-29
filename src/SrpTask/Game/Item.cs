@@ -61,12 +61,12 @@
             return itemIsUniqueAndPlayerAlreadyHasIt;
         }
 
-        public void RareItemAction(RpgPlayer rpgPlayer, IGameEngine gameEngine)
+        public void RareItemEffectAction(Item item, RpgPlayer rpgPlayer, IGameEngine gameEngine)
         {
             if (Rare) gameEngine.PlaySpecialEffect("cool_swirly_particles");
         }
 
-        public bool HealthItemAction(RpgPlayer rpgPlayer, IGameEngine gameEngine)
+        public bool HealthItemEffectAction(Item item, RpgPlayer rpgPlayer, IGameEngine gameEngine)
         {
             if (Heal <= 0) return false;
             rpgPlayer.Health += Heal;
@@ -89,9 +89,9 @@
             if (UniqueItemPickupRule(this, rpgPlayer)) return;
 
             // Don't pick up items that give health, just consume them.
-            if (HealthItemAction(rpgPlayer, rpgPlayer.GameEngine)) return;
+            if (HealthItemEffectAction(this, rpgPlayer, rpgPlayer.GameEngine)) return;
 
-            RareItemAction(rpgPlayer, rpgPlayer.GameEngine);
+            RareItemEffectAction(this, rpgPlayer, rpgPlayer.GameEngine);
 
             rpgPlayer.Inventory.Add(this);
         }
