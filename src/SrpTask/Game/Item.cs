@@ -47,12 +47,7 @@ namespace SrpTask.Game
             if (ItemIsTooHeavyToPickupRule(this, rpgPlayer)) return;
             if (UniqueItemPickupRule(this, rpgPlayer)) return;
 
-            var effects = new List<ItemEffect>
-            {
-                new HealthItemEffect(),
-                new RareItemEffect(),
-                new RegularItemEffect()
-            };
+            var effects = ItemEffectsFactory.EffectsForItem(this);
 
             foreach (var effect in effects)
             {
