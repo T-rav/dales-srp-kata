@@ -44,9 +44,7 @@ namespace SrpTask.Game
 
         public bool PickUpItem(Item item)
         {
-            var weight = CalculateInventoryWeight();
-            if (weight + item.Weight > CarryingCapacity)
-                return false;
+            if (!ItemWeightCheckAction(item)) return false;
 
             if (!UniqueItemAction(item)) return false;
 
@@ -59,6 +57,14 @@ namespace SrpTask.Game
 
             CalculateStats();
 
+            return true;
+        }
+
+        private bool ItemWeightCheckAction(Item item)
+        {
+            var weight = CalculateInventoryWeight();
+            if (weight + item.Weight > CarryingCapacity)
+                return false;
             return true;
         }
 
