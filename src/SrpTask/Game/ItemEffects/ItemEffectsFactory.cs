@@ -22,6 +22,11 @@ namespace SrpTask.Game.ItemEffects
                 effects.Add(new RareItemEffect());
             }
 
+            if (item.Rare && item.Unique)
+            {
+                effects.Add(new RareAndUniqueEffect());
+            }
+
             return effects;
         }
     }

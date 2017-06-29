@@ -112,6 +112,26 @@ namespace SrpTask.GameTests
         }
 
         [Test]
+        public void PickUpItem_ThatIsBothRareAndUnique_AnExtraBlueSwirlyEffectOccurs()
+        {
+            // Arrange
+            var rareAndUniqueItem = ItemBuilder
+                .Build
+                .WithId(100)
+                .IsUnique(true)
+                .IsRare(true)
+                .AnItem();
+
+            Engine.Setup(x => x.PlaySpecialEffect("blue_swirly")).Verifiable();
+
+            // Act
+            Player.PickUpItem(rareAndUniqueItem);
+
+            // Assert
+            Engine.VerifyAll();
+        }
+
+        [Test]
         public void PickUpItem_ThatDoesMoreThan500Healing_AnExtraGreenSwirlyEffectOccurs()
         {
             // Arrange
