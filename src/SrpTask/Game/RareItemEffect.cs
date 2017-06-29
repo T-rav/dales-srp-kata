@@ -4,7 +4,7 @@ namespace SrpTask.Game
 {
     public class RareItemEffect
     {
-        public static void Effect(Item item, RpgPlayer rpgPlayer, IGameEngine gameEngine, Action<Item, RpgPlayer> inventoryCallback)
+        public void Effect(Item item, RpgPlayer rpgPlayer, IGameEngine gameEngine, Action<Item, RpgPlayer> inventoryCallback)
         {
             if (item.Rare)
             {

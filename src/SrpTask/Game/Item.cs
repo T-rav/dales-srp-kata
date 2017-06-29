@@ -46,9 +46,9 @@ namespace SrpTask.Game
             if (ItemIsTooHeavyToPickupRule(this, rpgPlayer)) return;
             if (UniqueItemPickupRule(this, rpgPlayer)) return;
 
-            HealthItemEffect.Effect(this, rpgPlayer, rpgPlayer.GameEngine, AddItemToInventory);
-            RareItemEffect.Effect(this, rpgPlayer, rpgPlayer.GameEngine, AddItemToInventory);
-            RegularItemEffect.Effect(this, rpgPlayer, rpgPlayer.GameEngine, AddItemToInventory);
+            new HealthItemEffect().Effect(this, rpgPlayer, rpgPlayer.GameEngine, AddItemToInventory);
+            new RareItemEffect().Effect(this, rpgPlayer, rpgPlayer.GameEngine, AddItemToInventory);
+            new RegularItemEffect().Effect(this, rpgPlayer, rpgPlayer.GameEngine, AddItemToInventory);
         }
 
         private void AddItemToInventory(Item item, RpgPlayer rpgPlayer)
