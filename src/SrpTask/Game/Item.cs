@@ -21,14 +21,14 @@
             Id = id;
         }
 
-        public bool ItemIsTooHeavyToPickupRule(Item item, RpgPlayer rpgPlayer)
+        public static bool ItemIsTooHeavyToPickupRule(Item item, RpgPlayer rpgPlayer)
         {
             var weight = rpgPlayer.CalculateInventoryWeight();
             var itemWeightIsOverPlayerCarryingCapacity = weight + item.Weight > rpgPlayer.CarryingCapacity;
             return itemWeightIsOverPlayerCarryingCapacity;
         }
 
-        public bool UniqueItemPickupRule(Item item, RpgPlayer rpgPlayer)
+        public static bool UniqueItemPickupRule(Item item, RpgPlayer rpgPlayer)
         {
             var itemIsUniqueAndPlayerAlreadyHasIt = item.Unique && rpgPlayer.CheckIfItemExistsInInventory(item);
             return itemIsUniqueAndPlayerAlreadyHasIt;
