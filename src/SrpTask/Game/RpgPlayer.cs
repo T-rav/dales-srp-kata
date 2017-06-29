@@ -54,7 +54,7 @@ namespace SrpTask.Game
 
         public bool PickUpItem(Item item)
         {
-            if (!item.ItemWeightCheckAction(this)) return false;
+            if (!item.IsLightEnoughToPickup(this)) return false;
 
             if (!item.UniqueItemAction(this)) return false;
 

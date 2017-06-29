@@ -48,12 +48,11 @@
             Id = id;
         }
 
-        public bool ItemWeightCheckAction(RpgPlayer rpgPlayer)
+        public bool IsLightEnoughToPickup(RpgPlayer rpgPlayer)
         {
             var weight = rpgPlayer.CalculateInventoryWeight();
-            if (weight + this.Weight > rpgPlayer.CarryingCapacity)
-                return false;
-            return true;
+            var itemWeightIsOverPlayerCarryingCapacity = weight + Weight > rpgPlayer.CarryingCapacity;
+            return !itemWeightIsOverPlayerCarryingCapacity;
         }
 
         public bool UniqueItemAction(RpgPlayer rpgPlayer)
@@ -86,6 +85,11 @@
                 return true;
             }
             return false;
+        }
+
+        public void ActionForPlayer(RpgPlayer rpgPlayer)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }
