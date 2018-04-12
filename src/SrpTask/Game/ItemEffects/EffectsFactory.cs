@@ -2,24 +2,24 @@ using System.Collections.Generic;
 
 namespace SrpTask.Game.ItemEffects
 {
-    public class ItemEffectsFactory
+    public class EffectsFactory
     {
-        public static IEnumerable<ItemEffect> EffectsFor(Item item)
+        public static IEnumerable<IEffect> EffectsFor(Item item)
         {
-            var effects = new List<ItemEffect>
+            var effects = new List<IEffect>
             {
-                new RegularItemEffect()
+                new RegularEffect()
             };
 
             if (item.Heal > 0)
             {
-                effects.Add(new AddHealthItemEffect());
+                effects.Add(new AddHealthEffect());
                 effects.Add(new LargeHealthQuantitySpecialEffect());
             }
 
             if (item.Rare)
             {
-                effects.Add(new RareItemEffect());
+                effects.Add(new RareEffect());
             }
 
             if (item.Rare && item.Unique)

@@ -7,11 +7,11 @@ namespace SrpTask.Game
     {
         public int Health { get; set; }
         public int MaxHealth { get; set; }
-        public int Armour { get; private set; }
+        public int Armour { get; set; }
         public int CarryingCapacityInKilograms { get; }
         public const int MaximumCarryingCapacityInKilograms = 1000;
 
-        public List<Item> Inventory;
+        public List<Item> Inventory { get;  }
         public IGameEngine GameEngine { get; }
 
         public Player(IGameEngine gameEngine)
@@ -52,13 +52,10 @@ namespace SrpTask.Game
             GameEngine.PlaySpecialEffect("lots_of_gore");
         }
 
-        public bool CheckIfItemExistsInInventory(Item item)
-            => Inventory.Any(x => x.Id == item.Id);
+        public bool CheckIfItemExistsInInventory(Item item) => Inventory.Any(x => x.Id == item.Id);
 
-        public int CalculateInventoryWeight()
-            => Inventory.Sum(x => x.Weight);
+        public int CalculateInventoryWeight() => Inventory.Sum(x => x.Weight);
 
-        private void CalculateStats()
-            => Armour = Inventory.Sum(x => x.Armour);
+        private void CalculateStats() => Armour = Inventory.Sum(x => x.Armour);
     }
 }

@@ -4,7 +4,13 @@ namespace SrpTask.Game
 {
     public class Item
     {
-        public readonly bool Rare;
+        public int Id { get; }
+        public string Name { get;  }
+        public int Heal { get;  }
+        public int Armour { get;  }
+        public int Weight { get;  }
+        public bool Unique { get; }
+        public bool Rare { get; }
 
         public Item(int id, string name, int heal, int armour, int weight, bool unique, bool rare)
         {
@@ -17,21 +23,14 @@ namespace SrpTask.Game
             Id = id;
         }
 
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public int Heal { get; set; }
-        public int Armour { get; set; }
-        public int Weight { get; set; }
-        public bool Unique { get; set; }
-
-        public static bool ItemIsTooHeavyToPickupRule(Item item, Player player)
+        public bool ItemIsTooHeavyToPickupRule(Item item, Player player)
         {
             var weight = player.CalculateInventoryWeight();
             var itemWeightIsOverPlayerCarryingCapacity = weight + item.Weight > player.CarryingCapacityInKilograms;
             return itemWeightIsOverPlayerCarryingCapacity;
         }
 
-        public static bool UniqueItemPickupRule(Item item, Player player)
+        public bool UniqueItemPickupRule(Item item, Player player)
         {
             var itemIsUniqueAndPlayerAlreadyHasIt = item.Unique && player.CheckIfItemExistsInInventory(item);
             return itemIsUniqueAndPlayerAlreadyHasIt;
@@ -42,7 +41,7 @@ namespace SrpTask.Game
             if (ItemIsTooHeavyToPickupRule(this, player)) return;
             if (UniqueItemPickupRule(this, player)) return;
 
-            foreach (var effect in ItemEffectsFactory.EffectsFor(this))
+            foreach (var effect in EffectsFactory.EffectsFor(this))
                 effect.Effect(this, player, player.GameEngine, AddItemToInventory);
         }
 

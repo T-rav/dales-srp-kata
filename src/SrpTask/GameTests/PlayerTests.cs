@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using FluentAssertions;
-using Moq;
+using NSubstitute;
 using NUnit.Framework;
 using SrpTask.Game;
 
@@ -9,233 +9,266 @@ namespace SrpTask.GameTests
     [TestFixture]
     public class PlayerTests
     {
-        public Player Player { get; set; }
+        //public Player Player { get; set; }
 
-        public Mock<IGameEngine> Engine { get; set; }
+        //public Mock<IGameEngine> Engine { get; set; }
 
-        [SetUp]
-        public void Setup()
-        {
-            Engine = new Mock<IGameEngine>();
-            Player = new Player(Engine.Object);
-        }
+        //[SetUp]
+        //public void Setup()
+        //{
+        //    Engine = new Mock<IGameEngine>();
+        //    Player = new Player(Engine.Object);
+        //}
 
         [Test]
         public void PickUpItem_ThatCanBePickedUp_ItIsAddedToTheInventory()
         {
             // Arrange
-            var item = ItemBuilder.Build.AnItem();
-
-            Player.Inventory.Should().BeEmpty();
+            var item = new ItemBuilder().Build();
+            var gameEngine = Substitute.For<IGameEngine>();
+            var player = new Player(gameEngine);
 
             // Act
-            Player.PickUpItem(item);
+            player.PickUpItem(item);
 
             // Assert
-            Player.Inventory.Should().Contain(item);
+            player.Inventory.Should().Contain(item);
         }
 
         [Test]
-        public void PickUpItem_ThatGivesHealth_HealthIsIncreaseAndItemIsNotAddedToInventory()
+        public void PickUpItem_ThatGivesHealth_ItemIsNotAddedToInventory()
         {
             // Arrange
-            Player.MaxHealth = 100;
-            Player.Health = 10;
-
-            var healthPotion = 
-                ItemBuilder
-                .Build
-                .WithHeal(100)
-                .AnItem();
-
+            var maxHealth = 100;
+            var gameEngine = Substitute.For<IGameEngine>();
+            var player = new Player(gameEngine) {MaxHealth = maxHealth, Health = 10};
+            var healthPotion = new ItemBuilder()
+                                    .WithHeal(maxHealth)
+                                    .Build();
             // Act
-            Player.PickUpItem(healthPotion);
+            player.PickUpItem(healthPotion);
 
             // Assert
-            Player.Inventory.Should().BeEmpty();
-            Player.Health.Should().Be(100);
+            player.Inventory.Should().BeEmpty();
         }
 
         [Test]
         public void PickUpItem_ThatGivesHealth_HealthDoesNotExceedMaxHealth()
         {
             // Arrange
-            Player.MaxHealth = 50;
-            Player.Health = 10;
+            var maxHealth = 50;
+            var gameEngine = Substitute.For<IGameEngine>();
+            var player = new Player(gameEngine) {MaxHealth = maxHealth, Health = 10};
 
             var healthPotion =
-                ItemBuilder
-                .Build
-                .WithHeal(100)
-                .AnItem();
+                new ItemBuilder()
+                .WithHeal(maxHealth)
+                .Build();
 
             // Act
-            Player.PickUpItem(healthPotion);
+            player.PickUpItem(healthPotion);
 
             // Assert
-            Player.Inventory.Should().BeEmpty();
-            Player.Health.Should().Be(50);
+            player.Health.Should().Be(maxHealth);
         }
 
         [Test]
         public void PickUpItem_ThatIsRare_ASpecialEffectShouldBePlayed()
         {
             // Arrange
-            var rareItem = ItemBuilder.Build.IsRare(true).AnItem();
-
-            Engine.Setup(x => x.PlaySpecialEffect("cool_swirly_particles")).Verifiable();
+            var effect = "cool_swirly_particles";
+            var rareItem = new ItemBuilder()
+                                .WithRareAttribute(true)
+                                .Build();
+            var gameEngine = Substitute.For<IGameEngine>();
+            gameEngine.PlaySpecialEffect(effect);
+            var player = new Player(gameEngine);
 
             // Act
-            Player.PickUpItem(rareItem);
+            player.PickUpItem(rareItem);
 
             // Assert
-            Engine.VerifyAll();
+            gameEngine.Received().PlaySpecialEffect(effect);
         }
 
         [Test]
-        public void PickUpItem_ThatIsUnique_ItShouldNotBePickedUpIfThePlayerAlreadyHasItInTheirInventory()
+        public void PickUpItem_ThatTwoItemsContainSameId_SecondItemShouldNotBePickedUpIfThePlayerAlreadyHasItInTheirInventory()
         {
             // Arrange
-            Player.PickUpItem(ItemBuilder.Build.WithId(100).AnItem());
-
-            var uniqueItem = ItemBuilder
-                .Build
+            var item = new ItemBuilder()
+                            .WithId(100)
+                            .Build();
+            
+            var uniqueItem = new ItemBuilder()
                 .WithId(100)
-                .IsUnique(true)
-                .AnItem();
+                .WithUniqueAttribute(true)
+                .Build();
+
+            var gameEngine = Substitute.For<IGameEngine>();
+            var player = new Player(gameEngine);
 
             // Act
-            Player.PickUpItem(uniqueItem);
+            player.PickUpItem(item);
+            player.PickUpItem(uniqueItem);
 
             // Assert
-            Player.Inventory.Should().NotContain(uniqueItem);
+            player.Inventory.Should().Contain(item);
+            player.Inventory.Should().NotContain(uniqueItem);
         }
 
         [Test]
-        public void PickUpItem_ThatIsBothRareAndUnique_AnExtraBlueSwirlyEffectOccurs()
+        public void PickUpItem_ThatIsBothRareAndUnique_BlueSwirlyEffectOccurs()
         {
             // Arrange
-            var rareAndUniqueItem = ItemBuilder
-                .Build
+            var rareAndUniqueItem = new ItemBuilder()
                 .WithId(100)
-                .IsUnique(true)
-                .IsRare(true)
-                .AnItem();
+                .WithUniqueAttribute(true)
+                .WithRareAttribute(true)
+                .Build();
 
-            Engine.Setup(x => x.PlaySpecialEffect("blue_swirly")).Verifiable();
+            var effect = "blue_swirly";
+            var gameEngine = Substitute.For<IGameEngine>();
+            var player = new Player(gameEngine);
 
             // Act
-            Player.PickUpItem(rareAndUniqueItem);
+            player.PickUpItem(rareAndUniqueItem);
 
             // Assert
-            Engine.VerifyAll();
+            gameEngine.Received(1).PlaySpecialEffect(effect);
         }
 
         [Test]
-        public void PickUpItem_ThatDoesMoreThan500Healing_AnExtraGreenSwirlyEffectOccurs()
+        public void PickUpItem_ThatDoesMoreThan500Healing_GreenSwirlyEffectOccurs()
         {
             // Arrange
-            var xPotion = ItemBuilder.Build.WithHeal(501).AnItem();
+            var xPotion = new ItemBuilder()
+                                .WithHeal(501)
+                                .Build();
 
-            Engine.Setup(x => x.PlaySpecialEffect("green_swirly")).Verifiable();
+            var effect = "green_swirly";
+            var gameEngine = Substitute.For<IGameEngine>();
+            gameEngine.PlaySpecialEffect(effect);
+            var player = new Player(gameEngine);
 
             // Act
-            Player.PickUpItem(xPotion);
+            player.PickUpItem(xPotion);
 
             // Assert
-            Engine.VerifyAll();
+            gameEngine.Received().PlaySpecialEffect(effect);
         }
 
         [Test]
         public void PickUpItem_ThatGivesArmour_ThePlayersArmourValueShouldBeIncreased()
         {
             // Arrange
-            Player.Armour.Should().Be(0);
+            var gameEngine = Substitute.For<IGameEngine>();
+            var player = new Player(gameEngine){Armour = 0};
 
-            var armour = ItemBuilder.Build.WithArmour(100).AnItem();
+            var itemArmourAmount = 100;
+            var armour = new ItemBuilder()
+                            .WithArmour(itemArmourAmount)
+                            .Build();
 
             // Act
-            Player.PickUpItem(armour);
+            player.PickUpItem(armour);
 
             // Assert
-            Player.Armour.Should().Be(100);
+            var expectedArmour = 100;
+            player.Armour.Should().Be(expectedArmour);
         }
 
         [Test]
         public void PickUpItem_ThatIsTooHeavy_TheItemIsNotPickedUpByPlayer()
         {
-            var heavyItem = ItemBuilder.Build.WithWeight(Player.CarryingCapacityInKilograms + 1).AnItem();
+            // Arrange
+            var gameEngine = Substitute.For<IGameEngine>();
+            var player = new Player(gameEngine);
+            var itemWeight = player.CarryingCapacityInKilograms + 1;
+            var heavyItem = new ItemBuilder()
+                                .WithWeight(itemWeight)
+                                .Build();
 
-            Player.PickUpItem(heavyItem);
+            // Act
+            player.PickUpItem(heavyItem);
 
-            Player.Inventory.Should().NotContain(heavyItem);
+            // Assert
+            player.Inventory.Should().NotContain(heavyItem);
         }
 
         [Test]
         public void TakeDamage_WithNoArmour_HealthIsReducedAndParticleEffectIsShown()
         {
             // Arrange
-            Engine.Setup(x => x.PlaySpecialEffect("lots_of_gore")).Verifiable();
-            Player.Health = 200;
+            var gameEngine = Substitute.For<IGameEngine>();
+            var effect = "lots_of_gore";
+            var player = new Player(gameEngine) { Health = 200};
+            var damage = 100;
 
             // Act
-            Player.TakeDamage(100);
+            player.TakeDamage(damage);
 
             // Assert
-            Player.Health.Should().Be(100);
-            Engine.VerifyAll();
-            
+            var expectedHealth = 100;
+            player.Health.Should().Be(expectedHealth);
+            gameEngine.Received(1).PlaySpecialEffect(effect);
         }
 
         [Test]
         public void TakeDamage_With50Armour_DamageIsReducedBy50AndParticleEffectIsShown()
         {
             // Arrange
-            Engine.Setup(x => x.PlaySpecialEffect("lots_of_gore")).Verifiable();
-            Player.PickUpItem(ItemBuilder.Build.WithArmour(50).AnItem());
-            Player.Health = 200;
+            var gameEngine = Substitute.For<IGameEngine>();
+            var item = new ItemBuilder().WithArmour(50).Build();
+            var player = new Player(gameEngine) { Health = 200};
+            var effect = "lots_of_gore";
 
             // Act
-            Player.TakeDamage(100);
+            player.PickUpItem(item);
+            var damage = 100;
+            player.TakeDamage(damage);
 
             // Assert
-            Player.Health.Should().Be(150);
+            var expectedHealth = 150;
+            player.Health.Should().Be(expectedHealth);
+            gameEngine.Received(1).PlaySpecialEffect(effect);
         }
 
         [Test]
         public void TakeDamage_WithMoreArmourThanDamage_NoDamageIsDealtAndParryEffectIsPlayed()
         {
             // Arrange
-            Engine.Setup(x => x.PlaySpecialEffect("parry")).Verifiable();
-            Player.PickUpItem(ItemBuilder.Build.WithArmour(2000).AnItem());
-            Player.Health = 200;
+            var effect = "parry";
+            var gameEngine = Substitute.For<IGameEngine>();
+            var item = new ItemBuilder().WithArmour(2000).Build();
+            var player = new Player(gameEngine) { Health = 200};
 
             // Act
-            Player.TakeDamage(100);
+            player.PickUpItem(item);
+            player.TakeDamage(100);
 
             // Assert
-            Player.Health.Should().Be(200);
-            Engine.VerifyAll();
+            var expectedHealth = 200;
+            player.Health.Should().Be(expectedHealth);
+            gameEngine.Received(1).PlaySpecialEffect(effect);
         }
 
         [Test]
         public void UseItem_StinkBomb_AllEnemiesNearThePlayerAreDamaged()
         {
             // Arrange
-            var enemy = new Mock<IEnemy>();
+            var enemy = Substitute.For<IEnemy>();
+            var gameEngine = Substitute.For<IGameEngine>();
+            gameEngine.GetEnemiesNear(Arg.Any<Player>()).Returns(new List<IEnemy>{ enemy});
+            var player = new Player(gameEngine);
 
-            var item = ItemBuilder.Build.WithName("Stink Bomb").AnItem();
-            Engine.Setup(x => x.GetEnemiesNear(Player))
-                .Returns(new List<IEnemy>
-                {
-                    enemy.Object
-                });
+            var item = new ItemBuilder().WithName("Stink Bomb").Build();
 
             // Act
-            Player.UseItem(item);
+            player.UseItem(item);
 
             // Assert
-            enemy.Verify(x => x.TakeDamage(100));
+            var expectedDamage = 100;
+            enemy.Received(1).TakeDamage(expectedDamage);
         }
     }
 }

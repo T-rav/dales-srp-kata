@@ -12,17 +12,6 @@ namespace SrpTask
         private bool _unique = false;
         private bool _rare = false;
 
-        public static ItemBuilder Build => new ItemBuilder();
-
-        public Item AnItem()
-        {
-            return new Item(_id, _name, _heal, _armour, _weight, _unique, _rare);
-        }
-
-        private ItemBuilder()
-        {
-        }
-
         public ItemBuilder WithHeal(int heal)
         {
             _heal = heal;
@@ -30,13 +19,13 @@ namespace SrpTask
         }
 
 
-        public ItemBuilder IsRare(bool isRare)
+        public ItemBuilder WithRareAttribute(bool isRare)
         {
             _rare = isRare;
             return this;
         }
 
-        public ItemBuilder IsUnique(bool isUnique)
+        public ItemBuilder WithUniqueAttribute(bool isUnique)
         {
             _unique = isUnique;
             return this;
@@ -64,6 +53,11 @@ namespace SrpTask
         {
             _name = name;
             return this;
+        }
+
+        public Item Build()
+        {
+            return new Item(_id, _name, _heal, _armour, _weight, _unique, _rare);
         }
     }
 }
