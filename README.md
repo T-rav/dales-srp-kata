@@ -17,5 +17,5 @@ RpgPlayer class is starting to turn into a hair-ball of responsibilities.
 
 Even though the public interface for the RpgPlayer looks nice and tidy, the nightmare exists behind the scenes.
 
-The RpgPlayer has far too much knowledge about what the items are capable of, though initially this may have seemed like a good place to
+The __Player__ has far too much knowledge about what the items are capable of, though initially this may have seemed like a good place to
 put the logic as the items are *mostly* acting on the player.
