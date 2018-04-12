@@ -9,17 +9,6 @@ namespace SrpTask.GameTests
     [TestFixture]
     public class PlayerTests
     {
-        //public Player Player { get; set; }
-
-        //public Mock<IGameEngine> Engine { get; set; }
-
-        //[SetUp]
-        //public void Setup()
-        //{
-        //    Engine = new Mock<IGameEngine>();
-        //    Player = new Player(Engine.Object);
-        //}
-
         [Test]
         public void PickUpItem_ThatCanBePickedUp_ItIsAddedToTheInventory()
         {
