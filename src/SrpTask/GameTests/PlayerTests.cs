@@ -77,7 +77,7 @@ namespace SrpTask.GameTests
             player.PickUpItem(rareItem);
 
             // Assert
-            gameEngine.Received().PlaySpecialEffect(effect);
+            gameEngine.Received(2).PlaySpecialEffect(effect);
         }
 
         [Test]
@@ -143,7 +143,7 @@ namespace SrpTask.GameTests
             player.PickUpItem(xPotion);
 
             // Assert
-            gameEngine.Received().PlaySpecialEffect(effect);
+            gameEngine.Received(2).PlaySpecialEffect(effect);
         }
 
         [Test]
